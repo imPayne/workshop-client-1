@@ -1,6 +1,7 @@
 const axios = require('axios');
-const config = require('./config');
+const config = require('../configapi');
 
+// Fonction pour rechercher des livres
 const searchBooks = async (query = '', limit = 12, genre = '', authors = '') => {
     let url = 'https://www.googleapis.com/books/v1/volumes?q=';
 
@@ -15,8 +16,7 @@ const searchBooks = async (query = '', limit = 12, genre = '', authors = '') => 
     }
 
     if (!query && !genre && !authors) {
-        console.error('Veuillez fournir au moins un terme de recherche (nom de livre, genre ou auteur).');
-        return;
+        throw new Error('Veuillez fournir au moins un terme de recherche.');
     }
 
     url += `&maxResults=${limit}&key=${config.apiKey}`;
@@ -24,7 +24,7 @@ const searchBooks = async (query = '', limit = 12, genre = '', authors = '') => 
     try {
         const response = await axios.get(url);
         if (response.data.items && response.data.items.length > 0) {
-            const books = response.data.items.map(item => ({
+            return response.data.items.map(item => ({
                 id: item.id,
                 title: item.volumeInfo.title,
                 authors: item.volumeInfo.authors || ['Inconnu'],
@@ -34,12 +34,11 @@ const searchBooks = async (query = '', limit = 12, genre = '', authors = '') => 
                 publisher: item.volumeInfo.publisher || 'Éditeur inconnu',
                 image: item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'Pas d\'image disponible'
             }));
-            console.table(books);
         } else {
-            console.log(`Aucun livre trouvé avec ces critères.`);
+            return [];
         }
     } catch (error) {
-        console.error('Erreur lors de la récupération des données :', error);
+        throw new Error('Erreur lors de la récupération des données : ' + error.message);
     }
 };
 
@@ -51,7 +50,7 @@ const searchBookById = async (id) => {
         const response = await axios.get(url);
         if (response.data) {
             const item = response.data;
-            const book = {
+            return {
                 id: item.id,
                 title: item.volumeInfo.title,
                 authors: item.volumeInfo.authors || ['Inconnu'],
@@ -61,18 +60,15 @@ const searchBookById = async (id) => {
                 publisher: item.volumeInfo.publisher || 'Éditeur inconnu',
                 image: item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'Pas d\'image disponible'
             };
-            console.table([book]);
         } else {
-            console.log(`Aucun livre trouvé avec l'ID : ${id}.`);
+            return null;
         }
     } catch (error) {
-        console.error('Erreur lors de la récupération des données :', error);
+        throw new Error('Erreur lors de la récupération des données : ' + error.message);
     }
 };
 
-// Exemple
-//searchBooks('', 5, 'Programming'); // recherche genre seulement
-//searchBooks('', 5, '', 'Doe'); // recherche auteur seulement
-
-
-searchBookById('o2kXqVorrp4C');;
+module.exports = {
+    searchBooks,
+    searchBookById
+};

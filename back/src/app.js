@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
+const bookRoutes = require('./routes/bookRoutes');
 const sequelize = require('./config');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -18,7 +19,7 @@ const swaggerOptions = {
             description: 'API pour gérer les utilisateurs',
         },
     },
-    apis: ['./src/routes/userRoutes.js'], // chemin
+    apis: ['./src/routes/*.js'], // chemin
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -35,6 +36,7 @@ sequelize.sync()
 
 // routes
 app.use('/users', userRoutes);
+app.use('/books', bookRoutes);
 
 // run
 const PORT = process.env.PORT || 3000;
