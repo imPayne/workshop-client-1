@@ -6,7 +6,7 @@ const config = require('../configapi');
 //       Fonction pour rechercher des livres         //
 //                                                   //
 ///////////////////////////////////////////////////////
-const searchBooks = async (query = '', limit = 30, genre = '', authors = '') => {
+const searchBooks = async (query = '', limit = 40, genre = '', authors = '') => {
     let url = 'https://www.googleapis.com/books/v1/volumes?q=';
 
     if (query) {
@@ -81,7 +81,7 @@ const searchBookById = async (id) => {
 const getUniqueGenres = async () => {
     try {
         const genres = new Set();
-        const terms = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        const terms = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
         // Effectuer une recherche pour chaque terme
         for (const term of terms) {
