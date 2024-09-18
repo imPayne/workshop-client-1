@@ -8,6 +8,7 @@ const router = express.Router();
  * /users/register:
  *   post:
  *     summary: Créer un nouvel utilisateur
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:

@@ -8,6 +8,7 @@ const router = express.Router();
  * /books/search:
  *   post:
  *     summary: Rechercher des livres
+ *     tags: [Book]
  *     requestBody:
  *       required: true
  *       content:
@@ -44,6 +45,7 @@ router.post('/search', async (req, res) => {
  * /books/{id}:
  *   get:
  *     summary: Rechercher un livre par ID
+ *     tags: [Book]
  *     parameters:
  *       - in: path
  *         name: id
