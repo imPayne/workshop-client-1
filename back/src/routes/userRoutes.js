@@ -38,4 +38,42 @@ const router = express.Router();
  */
 router.post('/register', userController.registerUser);
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Récupérer tous les utilisateurs
+ *     tags: [User]
+ *     responses:
+ *       200:
+ *         description: Liste des utilisateurs récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   pseudo:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   firstname:
+ *                     type: string
+ *                   mail:
+ *                     type: string
+ *                   gender:
+ *                     type: boolean
+ *                   bio:
+ *                     type: string
+ *                   age:
+ *                     type: integer
+ *                   admin:
+ *                     type: boolean
+ *       500:
+ *         description: Erreur lors de la récupération des utilisateurs
+ */
+router.get('/', userController.getAllUsers);
 module.exports = router;
