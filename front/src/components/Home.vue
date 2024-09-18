@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import Navbar from "./components/Navbar.vue";
 </script>
 
 <template>
-  <Navbar />
+  <div class="flex items-center justify-center">
+    <h1 class="text-2xl font-bold">Top 5 des livres les mieux notés :</h1>
+  </div>
   <RouterView />
 </template>
 
