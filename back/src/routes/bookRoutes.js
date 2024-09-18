@@ -40,6 +40,37 @@ router.post('/search', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /books/genres:
+ *   get:
+ *     summary: Récupérer tous les genres
+ *     tags: [Book]
+ *     responses:
+ *       200:
+ *         description: Liste des genres récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *       500:
+ *         description: Erreur lors de la récupération des genres
+ */
+router.get('/genres', async (req, res) => {
+    try {
+        const genres = await bookController.getUniqueGenres();
+        res.json(genres);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
+
 /**
  * @swagger
  * /books/{id}:
@@ -74,5 +105,8 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+
 
 module.exports = router;
