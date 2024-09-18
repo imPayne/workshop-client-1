@@ -25,6 +25,7 @@ const searchBooks = async (query = '', limit = 12, genre = '', authors = '') => 
         const response = await axios.get(url);
         if (response.data.items && response.data.items.length > 0) {
             const books = response.data.items.map(item => ({
+                id: item.id,
                 title: item.volumeInfo.title,
                 authors: item.volumeInfo.authors || ['Inconnu'],
                 summary: item.volumeInfo.description || 'Pas de description disponible.',
@@ -42,6 +43,36 @@ const searchBooks = async (query = '', limit = 12, genre = '', authors = '') => 
     }
 };
 
+// Fonction pour rechercher un livre par ID
+const searchBookById = async (id) => {
+    const url = `https://www.googleapis.com/books/v1/volumes/${id}?key=${config.apiKey}`;
+
+    try {
+        const response = await axios.get(url);
+        if (response.data) {
+            const item = response.data;
+            const book = {
+                id: item.id,
+                title: item.volumeInfo.title,
+                authors: item.volumeInfo.authors || ['Inconnu'],
+                summary: item.volumeInfo.description || 'Pas de description disponible.',
+                genre: item.volumeInfo.categories || ['Inconnu'],
+                publishedDate: item.volumeInfo.publishedDate || 'Date de publication inconnue',
+                publisher: item.volumeInfo.publisher || 'Éditeur inconnu',
+                image: item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : 'Pas d\'image disponible'
+            };
+            console.table([book]);
+        } else {
+            console.log(`Aucun livre trouvé avec l'ID : ${id}.`);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
+    }
+};
+
 // Exemple
-searchBooks('', 5, 'Programming'); // recherche genre seulement
-searchBooks('', 5, '', 'Doe'); // recherche auteur seulement
+//searchBooks('', 5, 'Programming'); // recherche genre seulement
+//searchBooks('', 5, '', 'Doe'); // recherche auteur seulement
+
+
+searchBookById('o2kXqVorrp4C');;
