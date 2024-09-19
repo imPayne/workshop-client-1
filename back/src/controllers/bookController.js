@@ -6,7 +6,7 @@ const config = require('../configapi');
 //       Fonction pour rechercher des livres         //
 //                                                   //
 ///////////////////////////////////////////////////////
-const searchBooks = async (query = '', limit = 40, genre = '', authors = '') => {
+exports.searchBooks = async (query = '', limit = 40, genre = '', authors = '') => {
     let url = 'https://www.googleapis.com/books/v1/volumes?q=';
 
     if (query) {
@@ -51,7 +51,7 @@ const searchBooks = async (query = '', limit = 40, genre = '', authors = '') => 
 //      Fonction pour rechercher un livre par ID     //
 //                                                   //
 ///////////////////////////////////////////////////////
-const searchBookById = async (id) => {
+exports.searchBookById = async (id) => {
     const url = `https://www.googleapis.com/books/v1/volumes/${id}?key=${config.apiKey}`;
 
     try {
@@ -74,40 +74,4 @@ const searchBookById = async (id) => {
     } catch (error) {
         throw new Error('Erreur lors de la récupération des données : ' + error.message);
     }
-};
-
-
-///////////////////////////////////////////////////////
-//                                                   //
-//     Fonction pour obtenir les 5 derniers livres   //
-//                                                   //
-///////////////////////////////////////////////////////
-const getLatestBooks = async () => {
-    try {
-        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=a&orderBy=newest&maxResults=5&key=${apiKey}`);
-
-        const bookIds = response.data.items.map(item => item.id);
-
-        console.log('IDs des livres récupérés:', bookIds);
-        return bookIds;
-    } catch (error) {
-        if (error.response) {
-            console.error('Erreur HTTP:', error.response.status);
-            console.error('Détails de l\'erreur:', error.response.data);
-        } else {
-            console.error('Erreur sans réponse:', error.message);
-        }
-    }
-};
-
-
-
-
-
-
-
-module.exports = {
-    searchBooks,
-    searchBookById,
-    getLatestBooks
 };

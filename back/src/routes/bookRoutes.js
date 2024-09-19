@@ -80,38 +80,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-/**
- * @swagger
- * /books/recent:
- *   get:
- *     summary: Récupérer les 5 derniers livres parus
- *     tags: [Book]
- *     responses:
- *       200:
- *         description: Liste des 5 derniers livres récupérée avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *       500:
- *         description: Erreur lors de la récupération des livres récents
- */
-router.get('/recent', async (req, res) => {
-    console.log('Requête Swagger Headers:', req.headers);  // Log des en-têtes de la requête
-    try {
-        const recentBooks = await bookController.getLatestBooks();
-        res.status(200).json(recentBooks);
-    } catch (error) {
-        console.error('Erreur lors de la récupération des livres récents:', error.message);
-        res.status(500).json({ error: 'Erreur lors de la récupération des livres récents' });
-    }
-});
-
 
 
 
