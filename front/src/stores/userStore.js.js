@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { decodeToken } from '../utils/decodeToken'; 
 
-const baseUrl = import.meta.env.VITE_APP_URL_API;
+const baseUrl = "http://localhost:3000";
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     async registerUser(userDetails) {
       try {
-        const response = await axios.post(baseUrl+'/register', userDetails);
+        const response = await axios.post(baseUrl+'/users/register', userDetails);
         this.user = response.data;
         const router = useRouter();
         router.push('/');
@@ -23,7 +23,7 @@ export const useUserStore = defineStore('user', {
     },
     async loginUser(credentials) {
       try {
-        const response = await axios.post(baseUrl+'/login', credentials);
+        const response = await axios.post(baseUrl+'/users/login', credentials);
         this.token = response.data.token;
         this.user = decodeToken(this.token);
         const router = useRouter();
