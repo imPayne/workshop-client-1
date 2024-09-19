@@ -62,7 +62,7 @@ exports.loginUser = async (req, res) => {
 
         // jeton jwt
         const token = jwt.sign(
-            { id: user.id, pseudo: user.pseudo, mail: user.mail, name: user.name, firstname: user.firstname, admin: user.admin, gender: user.gender, tags: user.tags },
+            { id: user.id, pseudo: user.pseudo, mail: user.mail, name: user.name, firstname: user.firstname, admin: user.admin, gender: user.gender, tags: user.tags, age: user.age },
             config.jwtSecret, 
             { expiresIn: '1h' } 
         );
