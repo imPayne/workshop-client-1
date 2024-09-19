@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const viewRoutes = require('./routes/viewRoutes');
+const advertRoutes = require('./routes/advertRoutes');
 const sequelize = require('./config');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -41,6 +42,7 @@ sequelize.sync()
 app.use('/users', userRoutes);
 app.use('/books', bookRoutes);
 app.use('/views', viewRoutes);
+app.use('/adverts', advertRoutes);
 
 // run
 const PORT = process.env.PORT || 3000;
