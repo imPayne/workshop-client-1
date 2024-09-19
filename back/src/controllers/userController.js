@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 
 // Enregistrer un nouvel utilisateur
 exports.registerUser = async (req, res) => {
-    const { pseudo, password, name, firstname, mail, gender, age } = req.body;
+    const { pseudo, password, name, firstname, mail, gender, age, tags } = req.body;
 
     try {
         // pseudo verif
@@ -31,8 +31,9 @@ exports.registerUser = async (req, res) => {
             mail,
             gender,
             age,
+            tags,
         });
-        res.status(201).json({ id: user.id, pseudo: user.pseudo, name: user.name, firstname: user.firstname, mail: user.mail, gender: user.gender });
+        res.status(201).json({ id: user.id, pseudo: user.pseudo, name: user.name, firstname: user.firstname, mail: user.mail, gender: user.gender, tags:user.tags });
     } catch (error) {
         res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' });
     }
@@ -64,7 +65,7 @@ exports.loginUser = async (req, res) => {
 
         // jeton jwt
         const token = jwt.sign(
-            { id: user.id, pseudo: user.pseudo, mail: user.mail, name: user.name, firstname:user.firstname, admin: user.admin, gender: user.gender },
+            { id: user.id, pseudo: user.pseudo, mail: user.mail, name: user.name, firstname:user.firstname, admin: user.admin, gender: user.gender, tags: user.tags },
             config.jwtSecret, 
             { expiresIn: '1h' } 
         );
@@ -79,9 +80,11 @@ exports.loginUser = async (req, res) => {
 // Récupérer tous les utilisateurs
 exports.getAllUsers = async (req, res) => {
     try {
-        const users = await User.findAll(); 
-        res.status(200).json(users); 
+        const users = await User.findAll(); // Récupérer tous les utilisateurs
+        res.status(200).json(users); // Retourner la liste des utilisateurs
     } catch (error) {
+        console.error('Erreur de récupération des utilisateurs :', error); // Log de l'erreur
         res.status(500).json({ error: 'Erreur lors de la récupération des utilisateurs' });
     }
 };
+

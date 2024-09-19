@@ -77,35 +77,10 @@ const searchBookById = async (id) => {
 };
 
 
-// Fonction pour récupérer les genres uniques
-const getUniqueGenres = async () => {
-    try {
-        const genres = new Set();
-        const terms = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
-        // Effectuer une recherche pour chaque terme
-        for (const term of terms) {
-            const books = await searchBooks(term); 
-            books.forEach(book => {
-                if (book.genre) {
-                    book.genre.forEach(g => genres.add(g)); // Ajouter chaque genre au Set
-                }
-            });
-        }
-
-        return Array.from(genres); // Convertir le Set en tableau
-    } catch (error) {
-        throw new Error('Erreur lors de la récupération des genres : ' + error.message);
-    }
-};
-
-
-
 
 
 
 module.exports = {
     searchBooks,
-    searchBookById,
-    getUniqueGenres 
+    searchBookById
 };

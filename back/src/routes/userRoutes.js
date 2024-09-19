@@ -30,6 +30,10 @@ const router = express.Router();
  *                 type: boolean
  *               age:
  *                 type: integer
+ *               tags:                  
+ *                 type: array          
+ *                 items:              
+ *                   type: string
  *     responses:
  *       201:
  *         description: Utilisateur créé
@@ -77,7 +81,6 @@ router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser)
 
 
-
 /**
  * @swagger
  * /users:
@@ -112,6 +115,8 @@ router.post('/login', userController.loginUser)
  *                     type: integer
  *                   admin:
  *                     type: boolean
+ *                   tags:
+ *                     type: string
  *       500:
  *         description: Erreur lors de la récupération des utilisateurs
  */
