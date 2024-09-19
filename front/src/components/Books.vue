@@ -1,16 +1,15 @@
 <script setup>
-const books = [
-  { title: 'Book 1', rating: 4.9 },
-  { title: 'Book 2', rating: 4.8 },
-  { title: 'Book 3', rating: 4.7 },
-  { title: 'Book 4', rating: 4.6 },
-  { title: 'Book 5', rating: 4.5 },
-  { title: 'Book 6', rating: 4.4 },
-  { title: 'Book 7', rating: 4.3 },
-  { title: 'Book 8', rating: 4.2 },
-  { title: 'Book 9', rating: 4.1 },
-  { title: 'Book 10', rating: 4.0 },
-];
+import {onMounted, ref} from "vue";
+import axios from "axios";
+
+const baseUrl = 'http://localhost:3000';
+
+const books = ref([]);
+
+onMounted(async () => {
+   books.value = await axios.get(baseUrl+'/books/search');
+   console.log(books.value);
+});
 </script>
 
 <template>

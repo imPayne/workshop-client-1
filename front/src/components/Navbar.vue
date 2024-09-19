@@ -17,16 +17,16 @@
               <RouterLink to="/books" class="block py-2 px-6 text-black hover:text-blue-700 transition-colors duration-300" :class="{ 'text-blue-700 font-bold': $route.path === '/books' }">Liste de livres</RouterLink>
             </li>
             <li v-if="!userStore.user">
-              <button @click="navigateTo('/register')" class="block py-2 px-6 bg-green-400 text-black hover:text-blue-700 transition-colors duration-300">S'inscrire</button>
+              <button @click="navigateTo('/register')" class="rounded-lg block py-2 px-6 bg-green-400 text-black hover:text-blue-700 transition-colors duration-300">S'inscrire</button>
             </li>
             <li v-if="!userStore.user">
-              <button @click="navigateTo('/login')" class="block py-2 px-6 bg-blue-400 text-black hover:text-blue-700 transition-colors duration-300">Se connecter</button>
+              <button @click="navigateTo('/login')" class="rounded-lg block py-2 px-6 bg-blue-400 text-black hover:text-blue-700 transition-colors duration-300">Se connecter</button>
             </li>
             <li v-if="userStore.user">
               <RouterLink to="/account" class="block py-2 px-6 text-black hover:text-blue-700 transition-colors duration-300">Mon compte</RouterLink>
             </li>
             <li v-if="userStore.user">
-              <button @click="logout" class="block py-2 px-6 text-black hover:text-blue-700 transition-colors duration-300">Se déconnecter</button>
+              <button @click="logout" class="rounded-lg block py-2 px-6 bg-red-500 text-black hover:text-blue-700 transition-colors duration-300">Se Déconnecter</button>
             </li>
           </ul>
         </div>
