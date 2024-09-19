@@ -1,4 +1,5 @@
 const View = require('../models/View');
+const { Sequelize } = require('sequelize');
 
 // Créer un nouvel avis
 exports.createView = async (req, res) => {
@@ -63,3 +64,25 @@ exports.getAverageNoteByIdGoogle = async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la récupération des avis et du calcul de la moyenne' });
     }
 };
+
+
+
+exports.getTopRatedBooks = async (req, res) => {
+    try {
+        // Récupérer tous les avis groupés par id_google et calculer la moyenne des notes
+        const topRatedBooks = await View.findAll({
+            attributes: [
+                'id_google',
+                [Sequelize.fn('AVG', Sequelize.col('note')), 'averageNote']
+            ],
+            group: ['id_google'],
+            order: [[Sequelize.fn('AVG', Sequelize.col('note')), 'DESC']],
+            limit: 5
+        });
+
+        res.status(200).json(topRatedBooks);
+    } catch (error) {
+        res.status(500).json({ error: 'Erreur lors de la récupération des livres les mieux notés' });
+    }
+};
+

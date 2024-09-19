@@ -179,6 +179,43 @@ router.get('/id_google/:id_google', viewController.getViewsByIdGoogle);
 router.get('/average/:id_google', viewController.getAverageNoteByIdGoogle);
 
 
+/**
+ * @swagger
+ * /views/top-rated:
+ *   get:
+ *     summary: Récupérer les 5 livres les mieux notés
+ *     tags: [View]
+ *     responses:
+ *       200:
+ *         description: Liste des 5 livres les mieux notés récupérée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_google:
+ *                     type: string
+ *                     description: ID Google du livre
+ *                   averageNote:
+ *                     type: string
+ *                     description: Moyenne des notes pour ce livre
+ *       500:
+ *         description: Erreur lors de la récupération des livres les mieux notés
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Erreur lors de la récupération des livres les mieux notés
+ */
+router.get('/top-rated', viewController.getTopRatedBooks);
+
+
+
 
 
 module.exports = router;
