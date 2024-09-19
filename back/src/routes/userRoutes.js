@@ -38,6 +38,46 @@ const router = express.Router();
  */
 router.post('/register', userController.registerUser);
 
+
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Connexion d'un utilisateur
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pseudoOrEmail:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Connexion réussie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       404:
+ *         description: Utilisateur non trouvé
+ *       401:
+ *         description: Mot de passe incorrect
+ *       500:
+ *         description: Erreur lors de la connexion
+ */
+router.post('/login', userController.loginUser)
+
+
+
 /**
  * @swagger
  * /users:
