@@ -20,7 +20,7 @@ const User = sequelize.define('User', {
     },
     mail: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     gender: {
         type: DataTypes.BOOLEAN,
