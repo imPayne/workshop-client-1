@@ -4,6 +4,7 @@
       <div v-if="userStore.user" class="space-y-4">
         <div class="bg-gray-100 p-4 rounded-lg">
           <h2 class="text-xl font-semibold">Informations personnelles</h2>
+          <p v-if="userStore.user.admin" ><strong>ADMINISTRATEUR</strong></p>
           <p><strong>Pseudo :</strong> {{ userStore.user.pseudo }}</p>
           <p><strong>Nom :</strong> {{ userStore.user.name }}</p>
           <p><strong>Prénom :</strong> {{ userStore.user.firstname }}</p>

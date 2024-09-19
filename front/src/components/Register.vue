@@ -43,7 +43,8 @@ const register = async () => {
       mail: mail.value,
       gender: gender.value === 'true',
       age: parseInt(age.value, 10),
-      tags: "Drama"
+      tags: "Drama",
+      admin: false
     });
     await router.push('/');
   } catch (error) {

@@ -7,7 +7,7 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
         </button>
-  
+        <p v-if="userStore.user && userStore.user.admin" class="items-center underline text-center">Vue administrateur</p>
         <div class="hidden w-full md:flex items-center justify-center" id="navbar-default">
           <ul class="font-medium flex space-x-8">
             <li>
