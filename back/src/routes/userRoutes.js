@@ -31,9 +31,7 @@ const router = express.Router();
  *               age:
  *                 type: integer
  *               tags:                  
- *                 type: array          
- *                 items:              
- *                   type: string
+ *                 type: string
  *     responses:
  *       201:
  *         description: Utilisateur créé
