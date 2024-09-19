@@ -8,9 +8,8 @@
       <input v-model="firstname" type="text" placeholder="Prénom" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
       <input v-model="mail" type="email" placeholder="Email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
       <select v-model="gender" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <option value="false">Homme</option>
-        <option value="true">Femme</option>
-        <option value="false">Autre</option>
+        <option value="0">Homme</option>
+        <option value="1">Femme</option>
       </select>
       <input v-model="age" type="number" placeholder="Âge" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
       <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">S'inscrire</button>

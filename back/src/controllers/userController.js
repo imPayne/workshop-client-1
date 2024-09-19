@@ -41,41 +41,49 @@ exports.registerUser = async (req, res) => {
 
 // Connexion d'un utilisateur
 exports.loginUser = async (req, res) => {
-    const { pseudoOrEmail, password } = req.body;
+    const { mail, password } = req.body; 
+
+    console.log(req.body);
+    console.log(mail);
+    console.log(password);
 
     try {
+        console.log("1");
+        // Chercher l'utilisateur par email uniquement
         const user = await User.findOne({
             where: {
-                [Op.or]: [
-                    { pseudo: pseudoOrEmail },
-                    { mail: pseudoOrEmail }
-                ]
+                mail: mail 
             }
         });
+        console.log("2");
 
         if (!user) {
             return res.status(404).json({ error: 'Utilisateur non trouvé.' });
         }
 
-        // mdp
+        // Vérification du mot de passe
+        console.log(password);
+        console.log(user.password);
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log(isMatch);
         if (!isMatch) {
             return res.status(401).json({ error: 'Mot de passe incorrect.' });
         }
 
-        // jeton jwt
+        // Création du jeton JWT
         const token = jwt.sign(
-            { id: user.id, pseudo: user.pseudo, mail: user.mail, name: user.name, firstname:user.firstname, admin: user.admin, gender: user.gender, tags: user.tags },
+            { id: user.id, pseudo: user.pseudo, mail: user.mail, name: user.name, firstname: user.firstname, admin: user.admin, gender: user.gender, tags: user.tags },
             config.jwtSecret, 
             { expiresIn: '1h' } 
         );
 
-
         res.status(200).json({ token }); 
     } catch (error) {
+        console.error('Erreur lors de la connexion de l\'utilisateur:', error);
         res.status(500).json({ error: 'Erreur lors de la connexion de l\'utilisateur' });
     }
 };
+
 
 // Récupérer tous les utilisateurs
 exports.getAllUsers = async (req, res) => {
