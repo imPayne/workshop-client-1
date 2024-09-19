@@ -5,6 +5,7 @@ const User = sequelize.define('User', {
     pseudo: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true, //unique
     },
     password: {
         type: DataTypes.STRING,
@@ -20,7 +21,11 @@ const User = sequelize.define('User', {
     },
     mail: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
+        unique: true, //unique
+        validate: {
+            isEmail: true, // valid mail
+        },
     },
     gender: {
         type: DataTypes.BOOLEAN,
@@ -33,11 +38,21 @@ const User = sequelize.define('User', {
     age: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+            min: 0, // age positif
+        },
     },
     admin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    tags: { 
+        type: DataTypes.STRING, 
+        allowNull: false,
+    },
+}, {
+    tableName: 'users', 
+    timestamps: true, //createdAt et updatedAt
 });
 
 module.exports = User;
