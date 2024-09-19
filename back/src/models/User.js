@@ -48,7 +48,7 @@ const User = sequelize.define('User', {
     },
     tags: { 
         type: DataTypes.STRING, 
-        allowNull: false,
+        allowNull: true,
     },
 }, {
     tableName: 'users', 

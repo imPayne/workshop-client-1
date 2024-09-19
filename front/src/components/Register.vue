@@ -20,6 +20,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/userStore.js';
+import { useRouter } from 'vue-router';
 
 const pseudo = ref('');
 const password = ref('');
@@ -30,23 +31,23 @@ const gender = ref('false');
 const age = ref('');
 
 const userStore = useUserStore();
+const router = useRouter();
 
 const register = async () => {
-  await userStore.registerUser({
-    pseudo: pseudo.value,
-    password: password.value,
-    name: name.value,
-    firstname: firstname.value,
-    mail: mail.value,
-    gender: gender.value === 'true',
-    age: parseInt(age.value, 10)
-  });
+  try {
+    await userStore.registerUser({
+      pseudo: pseudo.value,
+      password: password.value,
+      name: name.value,
+      firstname: firstname.value,
+      mail: mail.value,
+      gender: gender.value === 'true',
+      age: parseInt(age.value, 10),
+      tags: "Drama"
+    });
+    await router.push('/');
+  } catch (error) {
+    console.error('Error during registration:', error);
+  }
 };
 </script>
-
-<style scoped>
-.container {
-  max-width: 600px;
-}
-</style>
-  

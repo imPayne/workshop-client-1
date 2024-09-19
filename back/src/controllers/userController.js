@@ -7,6 +7,7 @@ const { Op } = require('sequelize');
 // Enregistrer un nouvel utilisateur
 exports.registerUser = async (req, res) => {
     const { pseudo, password, name, firstname, mail, gender, age, tags } = req.body;
+    console.log(req.body);
 
     try {
         // pseudo verif
@@ -23,6 +24,8 @@ exports.registerUser = async (req, res) => {
 
         // Hachage mdp
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log("mdp hashé: ", hashedPassword);
+
         const user = await User.create({
             pseudo,
             password: hashedPassword,
@@ -33,9 +36,9 @@ exports.registerUser = async (req, res) => {
             age,
             tags,
         });
-        res.status(201).json({ id: user.id, pseudo: user.pseudo, name: user.name, firstname: user.firstname, mail: user.mail, gender: user.gender, tags:user.tags });
+        res.status(201).json({ message: "utilisateur créé avec succès."});
     } catch (error) {
-        res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' });
+        res.status(500).json({ error: error});
     }
 };
 

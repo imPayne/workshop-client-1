@@ -21,13 +21,24 @@
   </template>
   
   <script setup>
-  import { useUserStore } from '@/stores/userStore.js';
+  import { useUserStore } from '@/stores/userStore.js.js';
+  import {watch} from "vue";
+  import {useRouter} from "vue-router";
   
   const userStore = useUserStore();
-  
+
+  const router = useRouter();
+
   const logout = () => {
     userStore.logoutUser();
   };
+
+  watch(() => userStore.user, () => {
+    console.log(userStore.user);
+    if (!userStore.user) {
+      router.push('/');
+    }
+  });
   </script>
   
   <style scoped>

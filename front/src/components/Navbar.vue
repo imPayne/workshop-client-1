@@ -35,7 +35,7 @@
   </template>
   
   <script setup>
-  import { useUserStore } from '@/stores/userStore.js';
+  import { useUserStore } from '@/stores/userStore.js.js';
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   

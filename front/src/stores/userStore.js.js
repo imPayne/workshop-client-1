@@ -15,8 +15,6 @@ export const useUserStore = defineStore('user', {
       try {
         const response = await axios.post(baseUrl+'/users/register', userDetails);
         this.user = response.data;
-        const router = useRouter();
-        router.push('/');
       } catch (error) {
         console.error('Error registering user:', error);
       }
@@ -26,8 +24,6 @@ export const useUserStore = defineStore('user', {
         const response = await axios.post(baseUrl+'/users/login', credentials);
         this.token = response.data.token;
         this.user = decodeToken(this.token);
-        const router = useRouter();
-        router.push('/');
       } catch (error) {
         console.error('Error logging in user:', error);
       }
@@ -35,9 +31,9 @@ export const useUserStore = defineStore('user', {
     logoutUser() {
       this.token = null;
       this.user = null;
-      const router = useRouter();
-      router.push('/');
+
     },
   },
+  persist: true,
 });
 

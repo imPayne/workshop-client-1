@@ -11,15 +11,19 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useUserStore } from '@/stores/userStore.js';
+import { useUserStore } from '@/stores/userStore.js.js';
+import {useRouter} from "vue-router";
 
 const mail = ref('');
 const password = ref('');
 
 const userStore = useUserStore();
+const router = useRouter();
+
 
 const login = async () => {
   await userStore.loginUser({ mail: mail.value, password: password.value });
+  await router.push('/account');
 };
 </script>
   
