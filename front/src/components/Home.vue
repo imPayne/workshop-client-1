@@ -1,16 +1,18 @@
 <template>
-  <div v-if="!userStore.user" class="max-w-4xl mx-auto mt-10 space-y-10">
+  <div v-if="userStore.user && !userStore.user.admin" class="max-w-4xl mx-auto mt-10 space-y-10">
     <section class="my-5">
       <h2 class="text-2xl font-bold mb-4 text-center">Top 5 des livres les mieux notés :</h2>
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div v-for="book in topRatedBooks" :key="book.title" class="flex flex-col items-center p-4 bg-gray-100 rounded-md">
-          <div class="text-lg font-semibold">{{ book.title }}</div>
-          <div class="text-sm text-gray-500">Note: {{ book.rating }}</div>
+          <RouterLink to="books/details" class="block py-2 px-6 text-black hover:text-blue-700 transition-colors duration-300" :class="{ 'text-blue-700 font-bold': $route.path === '/' }">
+            <div class="text-lg font-semibold">{{ book.title }}</div>
+            <div class="text-sm text-gray-500">Note: {{ book.rating }}</div>
+          </RouterLink>
         </div>
       </div>
     </section>
 
-    <section class="my-5">
+    <!-- <section class="my-5">
       <h2 class="text-2xl font-bold mb-4 text-center">Top 5 des livres dernièrement parus :</h2>
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div v-for="book in latestBooks" :key="book.title" class="flex flex-col items-center p-4 bg-gray-100 rounded-md">
@@ -18,14 +20,17 @@
           <div class="text-sm text-gray-500">Date de sortie: {{ book.releaseDate }}</div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section class="my-5">
       <h2 class="text-2xl font-bold mb-4 text-center">Top 5 des livres pour le genre Action :</h2>
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div v-for="book in genreBooks" :key="book.title" class="flex flex-col items-center p-4 bg-gray-100 rounded-md">
-          <div class="text-lg font-semibold">{{ book.title }}</div>
-          <div class="text-sm text-gray-500">Genre: {{ book.genre }}</div>
+          <RouterLink to="books/details" class="block py-2 px-6 text-black hover:text-blue-700 transition-colors duration-300" :class="{ 'text-blue-700 font-bold': $route.path === '/' }">
+            <img :src="book.coverImage" alt="Cover Image" class="w-full h-auto mb-2 rounded-md">
+            <div class="text-lg font-semibold">{{ book.title }}</div>
+            <div class="text-sm text-gray-500">Genre: {{ book.genre }}</div>
+          </RouterLink>
         </div>
       </div>
     </section>
@@ -33,7 +38,7 @@
     <section>
       <h2 class="text-2xl font-bold mb-4 text-center">News créées par l'admin :</h2>
       <div class="space-y-4">
-        <div v-for="newsItem in newsStore.news" :key="newsItem.idadvert" class="p-4 bg-gray-100 rounded-md">
+        <div v-for="newsItem in localNews" :key="newsItem.idadvert" class="p-4 bg-gray-100 rounded-md">
           <div class="text-lg font-semibold">{{ newsItem.titre }}</div>
           <div class="text-sm text-gray-500">{{ newsItem.annonce }}</div>
         </div>
@@ -50,10 +55,11 @@
         <button class="p-2 bg-blue-500 text-white rounded hover:bg-blue-700" type="submit">Create</button>
       </form>
     </section>
+
     <section class="mb-5">
       <h2 class="text-xl font-bold mb-3">Supprimer News</h2>
       <ul class="list-none p-0">
-        <li v-for="newsItem in newsStore.news" :key="newsItem.idadvert" class="mb-3">
+        <li v-for="newsItem in localNews" :key="newsItem.idadvert" class="mb-3">
           <div class="flex justify-between items-center p-4 bg-gray-100 rounded-md">
             <div>
               <div class="text-lg font-semibold">{{ newsItem.titre }}</div>
@@ -64,25 +70,13 @@
         </li>
       </ul>
     </section>
-    <!-- <section class="mb-5">
-      <h2 class="text-xl font-bold mb-3">Modifier News</h2>
-      <ul class="list-none p-0">
-        <li v-for="newsItem in newsStore.news" :key="newsItem.idadvert" class="mb-3">
-          <div class="flex flex-col p-4 bg-gray-100 rounded-md">
-            <input v-model="newsItem.titre" class="mb-3 p-2 border border-gray-300 rounded" />
-            <textarea v-model="newsItem.annonce" class="mb-3 p-2 border border-gray-300 rounded"></textarea>
-            <button @click="updateNews(newsItem)" class="p-2 bg-green-500 text-white rounded hover:bg-green-700">Save</button>
-          </div>
-        </li>
-      </ul>
-    </section> -->
+
     <section class="mb-5">
       <h2 class="text-xl font-bold mb-3">Toutes les News</h2>
       <ul class="list-none p-0">
-        <li v-for="newsItem in newsStore.news" :key="newsItem.idadvert" class="mb-3">
+        <li v-for="newsItem in localNews" :key="newsItem.idadvert" class="mb-3">
           <div class="p-4 bg-gray-100 rounded-md">
             <div class="text-lg font-semibold">{{ newsItem.titre }}</div>
-            <div class="text-sm text-gray-500">{{ newsItem.idadvert }}</div>
             <div class="text-sm text-gray-500">{{ newsItem.annonce }}</div>
           </div>
         </li>
@@ -92,7 +86,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useUserStore } from '@/stores/userStore.js';
 import { useNewsStore } from '@/stores/newsStore.js';
 
@@ -124,11 +118,11 @@ const genreBooks = [
 ];
 
 const newNews = ref({ titre: '', annonce: '' });
+const localNews = ref([]); 
 
 const fetchNews = async () => {
   await newsStore.fetchNews();
-  console.log(newsStore.news); // Vérifie les données ici
-
+  localNews.value = [...newsStore.news]; 
 };
 
 const createNews = async () => {
@@ -137,14 +131,21 @@ const createNews = async () => {
     annonce: newNews.value.annonce,
   });
   newNews.value = { titre: '', annonce: '' };
+  localNews.value = [...newsStore.news]; 
 };
 
 const deleteNews = async (idadvert) => {
   await newsStore.deleteNews(idadvert);
+  localNews.value = [...newsStore.news];
 };
 
 onMounted(() => {
   fetchNews();
+});
+
+// Watcher pour synchroniser les news en cas de changement dans le store
+watch(() => newsStore.news, (newNewsData) => {
+  localNews.value = [...newNewsData];
 });
 </script>
 
