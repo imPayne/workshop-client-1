@@ -22,8 +22,11 @@ const router = useRouter();
 
 
 const login = async () => {
-  await userStore.loginUser({ mail: mail.value, password: password.value });
-  await router.push('/account');
+  const login = await userStore.loginUser({ mail: mail.value, password: password.value });
+
+  if(userStore.user){
+    await router.push('/account');
+  }
 };
 </script>
   
