@@ -11,7 +11,7 @@
         <option value="0">Homme</option>
         <option value="1">Femme</option>
       </select>
-      <input v-model="age" type="number" placeholder="Âge" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <input v-model="age" type="number" placeholder="Âge" required min="0" max="120"  class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
       <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300">S'inscrire</button>
     </form>
   </div>

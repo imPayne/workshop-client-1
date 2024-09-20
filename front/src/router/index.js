@@ -13,7 +13,7 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/login', component: Login },
   { path: '/account', component: Account },
-  { path: '/books/details', component: BookDetails }
+  { path: '/books/details/:id', component: BookDetails }
 ];
 
 const router = createRouter({

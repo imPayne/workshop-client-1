@@ -1,66 +1,68 @@
 ```vue
 <template>
     <div class="book-details">
-        <h1 class="title">{{ book.title }}</h1>
+        <h1 class="title text-4xl font-bold mb-10">{{ book.title }}</h1>
         <div class="content">
-            <img :src="book.coverImage" alt="Cover Image" class="cover-image">
+            <img :src="book.image" alt="Cover Image" class="w-44 h-auto mx-10">
             <div class="details">
-                <p><strong>Date de publication:</strong> {{ book.publicationDate }}</p>
-                <p><strong>Auteur:</strong> {{ book.author }}</p>
+                <p><strong>Date de publication:</strong> {{ book.publishedDate }}</p>
+                <p><strong>Auteur:</strong> {{ book.authors }}</p>
                 <p><strong>Editeur:</strong> {{ book.publisher }}</p>
                 <p><strong>Genre:</strong> {{ book.genre }}</p>
             </div>
         </div>
         <div class="summary">
-            <h2>Résumé</h2>
-            <p>{{ book.summary }}</p>
+            <h2 class="text-2xl font-bold mb-10">Résumé</h2>
+            <p>{{ book.summary.replace(/<\/?[^>]+(>|$)/g, "") }}</p>
         </div>
-        <div class="reviews">
-            <h2>Avis</h2>
-            <ul>
-                <li v-for="review in book.reviews" :key="review.id">
-                    <p><strong>{{ review.user }}:</strong> {{ review.comment }}</p>
-                </li>
-            </ul>
-        </div>
-        <div v-if="isUserLoggedIn" class="report-issue">
-            <h2>Signaler un problème</h2>
-            <form @submit.prevent="submitIssue">
-                <textarea v-model="issue" placeholder="Décrivez le problème"></textarea>
-                <button type="submit">Envoyer</button>
-            </form>
-        </div>
+<!--        <div class="reviews">-->
+<!--            <h2>Avis</h2>-->
+<!--            <ul>-->
+<!--                <li v-for="review in book.reviews" :key="review.id">-->
+<!--                    <p><strong>{{ review.user }}:</strong> {{ review.comment }}</p>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div v-if="isUserLoggedIn" class="report-issue">-->
+<!--            <h2>Signaler un problème</h2>-->
+<!--            <form @submit.prevent="submitIssue">-->
+<!--                <textarea v-model="issue" placeholder="Décrivez le problème"></textarea>-->
+<!--                <button type="submit">Envoyer</button>-->
+<!--            </form>-->
+<!--        </div>-->
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            book: {
-                title: 'Titre du Livre',
-                coverImage: 'path/to/cover/image.jpg',
-                publicationDate: '2023-01-01',
-                publisher: 'Nom de l\'éditeur',
-                author: 'Nom de l\'auteur',
-                genre: 'Genre1',
-                summary: 'Ceci est un résumé du livre.',
-                reviews: [
-                    { id: 1, user: 'Utilisateur1', comment: 'Avis 1' },
-                    { id: 2, user: 'Utilisateur2', comment: 'Avis 2' }
-                ]
-            },
-            isUserLoggedIn: true,
-            issue: ''
-        };
-    },
-    methods: {
-        // submitIssue() {
-        //     console.log('Issue submitted:', this.issue);
-        //     this.issue = '';
-        // }
-    }
-};
+<script setup lang="ts">
+
+import {onMounted, PropType, ref} from "vue";
+import {useRoute} from "vue-router";
+import axios from "axios";
+
+
+const route = useRoute();
+
+
+const book = ref({
+  title: '',
+  image: '',
+  publishedDate: '',
+  publisher: '',
+  authors: undefined,
+  genre: '',
+  summary: '',
+})
+const baseUrl = 'http://localhost:3000';
+
+onMounted( async () => {
+  const bookId = route.params.id;
+  const { data } = await axios.get(baseUrl+`/books/${bookId}`);
+  Object.assign(book.value, data);
+
+  const clearGenre = [...new Set(book.value.genre)];
+  book.value.genre = clearGenre.join(", ");
+});
+
 </script>
 
 <style scoped>
@@ -77,11 +79,6 @@ export default {
 
 .content {
     display: flex;
-}
-
-.cover-image {
-    max-width: 200px;
-    margin-right: 20px;
 }
 
 .details {
